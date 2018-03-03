@@ -1,0 +1,35 @@
+{
+  "name": "drop-upload",
+  "version": "0.1.0",
+  "description": "JavaScript library to upload files via drop to textarea ",
+  "main": "src/drop-upload.js",
+  "scripts": {
+    "build": "grunt",
+    "watch": "grunt watch"
+  },
+  "keywords": [
+    "drop",
+    "upload",
+    "textarea"
+  ],
+  "author": {
+    "name": "Antal Áron",
+    "email": "antalaron@antalaron.hu",
+    "url": "https://antalaron.hu"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/antalaron/drop-upload.git"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/antalaron/drop-upload/issues"
+  },
+  "homepage": "https://github.com/antalaron/drop-upload#readme",
+  "devDependencies": {
+    "grunt": "^1.0.2",
+    "grunt-contrib-uglify": "^3.3.0",
+    "grunt-contrib-watch": "^1.0.0"
+  },
+  "dependencies": {}
+}
