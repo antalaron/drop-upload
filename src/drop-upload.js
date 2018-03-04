@@ -74,6 +74,8 @@
             + callback()
             + strings[1];
 
+        e.selectionEnd = e.value.length - strings[1].length;
+
         return strings;
     }
 
