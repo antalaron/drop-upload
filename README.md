@@ -8,7 +8,7 @@ Installation
 
 Via npm:
 ```bash
-$ npm install --save-dev drop-upload
+$ npm install --save drop-upload
 ```
 
 Via bower:
@@ -37,6 +37,7 @@ Usage
 Call on the desired element:
 
 ```javascript
+// DropUpload([parentSelector], [childSelector], [options]); eg:
 DropUpload(document, 'textarea.uploadable-textarea');
 ```
 

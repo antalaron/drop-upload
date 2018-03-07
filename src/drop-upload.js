@@ -54,15 +54,46 @@
         }
     }
 
-    var addEventForChild = function (parent, childSelector, eventName, callback) {
-        parent.addEventListener(eventName, function (event) {
-            var clickedElement = event.target;
-            var matchingChild = clickedElement.closest(childSelector)
+    var addEvent = function (parent, childSelector, eventName, callback) {
+        if (null === parent) {
+            addEventForElement(childSelector, eventName, callback);
+        } else {
+            addEventForChild(parent, childSelector, eventName, callback);
+        }
+    };
 
-            if (null !== matchingChild) {
-                callback(event)
-            }
-        })
+    var addEventForElement = function (selector, eventName, callback) {
+        var elements = document.querySelectorAll(selector);
+
+        for (var i = 0 ; i < elements.length; ++i) {
+            var element = elements[i]
+
+            element.addEventListener(eventName, callback);
+        }
+    };
+
+    var addEventForChild = function (parent, childSelector, eventName, callback) {
+        var parents;
+        var eParent;
+
+        if (document === parent) {
+            parents = [parent];
+        } else {
+            parents = document.querySelectorAll(parent);
+        }
+
+        for (var i = 0 ; i < parents.length; ++i) {
+            var eParent = parents[i]
+
+            eParent.addEventListener(eventName, function (event) {
+                var clickedElement = event.target;
+                var matchingChild = clickedElement.closest(childSelector)
+
+                if (null !== matchingChild) {
+                    callback(event)
+                }
+            });
+        }
     };
 
     var addImageText = function (e, callback, strings) {
@@ -80,10 +111,32 @@
     }
 
     function init() {
-        function api(element, selector, options) {
+        function api(/* element, selector, options */) {
+            var element, selector, options;
+
+            if (0 === arguments.length) {
+                throw 'At least one argument required';
+            } else if (1 === arguments.length) {
+                element = null;
+                selector = arguments[0];
+                options = {};
+            } else if (2 === arguments.length && 'object' === typeof arguments[1]) {
+                element = null;
+                selector = arguments[0];
+                options = arguments[1];
+            } else if (2 === arguments.length) {
+                element = arguments[0];
+                selector = arguments[1];
+                options = {};
+            } else {
+                element = arguments[0];
+                selector = arguments[1];
+                options = arguments[2];
+            }
+
             options = extend(api.options, options);
 
-            addEventForChild(
+            addEvent(
                 element,
                 selector,
                 'dragover',
@@ -92,7 +145,7 @@
                     e.stopPropagation();
                 }
             )
-            addEventForChild(
+            addEvent(
                 element,
                 selector,
                 'dragenter',
@@ -101,7 +154,7 @@
                     e.stopPropagation();
                 }
             )
-            addEventForChild(
+            addEvent(
                 element,
                 selector,
                 'drop',
@@ -130,10 +183,14 @@
                             var failed = false;
                             var failedReason = '';
                             if (request.status === 200) {
-                                var path = options['decodeResponseCallback'](postEvent.currentTarget.response);
-                                if (false === path) {
+                                try {
+                                    var path = options['decodeResponseCallback'](postEvent.currentTarget.response);
+                                    if (false === path) {
+                                        throw Error('Decode error');
+                                    }
+                                } catch (err) {
                                     failed = true;
-                                    failedReason = 'Decode';
+                                    failedReason = err.message;
                                 }
                             } else {
                                 failed = true;
@@ -181,7 +238,7 @@
                 return '![' + fileName + '](' + path + ')';
             },
             decodeResponseCallback: function (response) {
-                return response; // false if failed
+                return response; // false or throw Error if failed
             }
         };
 
