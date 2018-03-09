@@ -177,12 +177,18 @@
                         return options['uploadingCallback'](f.name);
                     });
 
+                    request.ontimeout = function (postEvent) {
+                        var customEvent = new CustomEvent('drop-upload:timeout', e);
+                        customEvent.reason = 'timeout';
+                        t.dispatchEvent(customEvent);
+                    };
+                    request.timeout = options['timeout'];
                     request.open('POST', options['uploadPath']);
                     request.onreadystatechange = function (postEvent) {
                         if (request.readyState === 4) {
                             var failed = false;
                             var failedReason = '';
-                            if (request.status === 200) {
+                            if (request.status !== 0) {
                                 try {
                                     var path = options['decodeResponseCallback'](postEvent.currentTarget.response);
                                     if (false === path) {
@@ -194,7 +200,7 @@
                                 }
                             } else {
                                 failed = true;
-                                failedReason = 'Communication: ' + request.status + ' ' + request.statusText;
+                                failedReason = 'Communication error';
                             }
 
                             if (!failed) {
@@ -239,7 +245,8 @@
             },
             decodeResponseCallback: function (response) {
                 return response; // false or throw Error if failed
-            }
+            },
+            timeout: 0
         };
 
         return api;

@@ -56,15 +56,17 @@ API reference
 | uploadingCallback      | function (fileName) {...}       | The value in the textarea during upload |
 | uploadedCallback       | function (fileName, path) {...} | The value in the textarea after upload  |
 | decodeResponseCallback | function (response) {...}       | Decoding response                       |
+| timeout                | 0                               | Timeout for requests (in ms)            |
 
 ### Events
 
-| Event name          | Description               |
-|:------------------- |:------------------------- |
-| drop-upload:start   | Upload started            |
-| drop-upload:end     | Upload ended              |
-| drop-upload:success | Upload ended with success |
-| drop-upload:error   | Upload failed             |
+| Event name          | Description                |
+|:------------------- |:-------------------------- |
+| drop-upload:start   | Upload started             |
+| drop-upload:end     | Upload ended               |
+| drop-upload:success | Upload ended with success  |
+| drop-upload:error   | Upload failed              |
+| drop-upload:timeout | Upload failed with timeout |
 
 
 License
