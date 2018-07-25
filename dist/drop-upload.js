@@ -166,6 +166,7 @@
                     var t = e.target;
 
                     var customEvent = new CustomEvent('drop-upload:start', {
+                        bubbles: true,
                         detail: {
                             originalEvent: e
                         }
@@ -183,6 +184,7 @@
 
                     request.ontimeout = function (postEvent) {
                         var customEvent = new CustomEvent('drop-upload:timeout', {
+                            bubbles: true,
                             detail: {
                                 originalEvent: e,
                                 reason: 'timeout'
@@ -213,6 +215,7 @@
 
                             if (!failed) {
                                 var customEvent = new CustomEvent('drop-upload:success', {
+                                    bubbles: true,
                                     detail: {
                                         originalEvent: e,
                                         fileName: f.name,
@@ -226,6 +229,7 @@
                                 }, strings);
                             } else {
                                 var customEvent = new CustomEvent('drop-upload:error', {
+                                    bubbles: true,
                                     detail: {
                                         originalEvent: e,
                                         reason: failedReason
@@ -239,6 +243,7 @@
                             }
 
                             var customEvent = new CustomEvent('drop-upload:end', {
+                                bubbles: true,
                                 detail: {
                                     originalEvent: e,
                                     success: !failed
